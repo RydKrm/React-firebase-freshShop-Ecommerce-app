@@ -1,0 +1,32 @@
+
+/** ADD YOUR AWESOME CODES HERE **/
+
+.btn-contact{
+    background-color: chocolate;
+    color: white;
+}
+select.bs-select-hidden,
+select.selectpicker {
+    display: block;
+}
+
+a.register {
+    margin: 3px;
+    color: white;
+    font-weight: 400;
+}
+
+button.btn.hvr-hover.btn-register {
+    background-color: black;
+    padding: 15px 23px;
+}
+button.btn.hvr-hover.btn-register:hover {
+    background-color: black;
+    color: white;
+    padding: 15px 23px;
+}
+
+a.\.btn\.hvr-hover\.btn-register {
+    background-color: black;
+}
+
