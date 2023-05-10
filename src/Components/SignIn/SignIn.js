@@ -49,13 +49,13 @@ const SignIn = () => {
                 ) : (
                   <button onClick={signInWithGoogle}>Google Sign in</button>
                 )}
-                {
-                 user.email && <div>
+                {user.email && (
+                  <div>
                     <h2>userEmail: {user.email}</h2>
                     <h2>Name : {user.displayName}</h2>
                     <img src={user.photoURL} alt="profile Pic" />
-                 </div>
-                } 
+                  </div>
+                )}
 
                 <form className="mt-3 review-form-box" id="formLogin">
                   <div className="form-row">
