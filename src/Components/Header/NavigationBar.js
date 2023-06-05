@@ -3,6 +3,8 @@ import MyCard from '../MyCard/MyCard';
 import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
+ // const [checkUser,setCheckUser] = useContext(userContext);
+  const user = JSON.parse(localStorage.getItem("fresh_shop"));
     return (
       <header className="main-header">
         <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav">
@@ -20,7 +22,13 @@ const NavigationBar = () => {
                 <i className="fa fa-bars"></i>
               </button>
               <Link className="navbar-brand" to="index.html">
-                <img src="images/logo.png" className="logo" alt="" />
+                <img
+                  width={"120px"}
+                  height={"80px"}
+                  src="images/logo.png"
+                  className="logo"
+                  alt=""
+                />
               </Link>
             </div>
 
@@ -40,33 +48,51 @@ const NavigationBar = () => {
                     About Us
                   </Link>
                 </li>
-                <li className="dropdown">
-                  <Link
-                    to="#"
-                    className="nav-link"
-                    data-toggle="dropdown"
-                  >
-                    Profile
-                  </Link>
-                  <ul className="dropdown-menu">
-                   
-                    <li>
-                      <Link to="shop-detail.html">Shop Detail</Link>
-                    </li>
-                    <li>
-                      <Link to="/cart">Cart</Link>
-                    </li>
-                    <li>
-                      <Link to="/checkout">Checkout</Link>
-                    </li>
-                    <li>
-                      <Link to="/my-account">My Account</Link>
-                    </li>
-                    <li>
-                      <Link to="/wishlist">Wishlist</Link>
-                    </li>
-                  </ul>
-                </li>
+                {user.userRole === "customer" && (
+                  <li className="dropdown">
+                    <Link to="#" className="nav-link" data-toggle="dropdown">
+                      Profile
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <Link to="shop-detail.html">Shop Detail</Link>
+                      </li>
+                      <li>
+                        <Link to="/cart">Cart</Link>
+                      </li>
+                      <li>
+                        <Link to="/checkout">Checkout</Link>
+                      </li>
+                      <li>
+                        <Link to="/my-account">My Account</Link>
+                      </li>
+                      <li>
+                        <Link to="/wishlist">Wishlist</Link>
+                      </li>
+                    </ul>
+                  </li>
+                )}
+                {user.userRole === "seller" && (
+                  <li className="dropdown">
+                    <Link to="#" className="nav-link" data-toggle="dropdown">
+                      Seller Profile
+                    </Link>
+                    <ul className="dropdown-menu">
+                      <li>
+                        <Link to="/shop_detail">Shop Detail</Link>
+                      </li>
+                      <li>
+                        <Link to="/seller_product">Seller Product</Link>
+                      </li>
+                      <li>
+                        <Link to="/add_product">Add Product</Link>
+                      </li>
+                      <li>
+                        <Link to="/my-account">My Account</Link>
+                      </li>
+                    </ul>
+                  </li>
+                )}
                 <li className="nav-item">
                   <Link className="nav-link" to="/shop">
                     Shop

@@ -1,62 +1,43 @@
 import React, { useState } from 'react';
-import HeroSection from '../About/HeroSection';
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
-import {getFirestore,collection, setDoc,doc} from '@firebase/firestore'
-import app from '../../fireBase/firebase.init';
-import { Link } from 'react-router-dom';
-import SellerRegister from './SellerRegister';
+import { useNavigate} from 'react-router-dom';
+import HeroSection from "../About/HeroSection";
+import { getFirestore,setDoc, doc } from "@firebase/firestore";
+import app from "../../fireBase/firebase.init";
 
-const Register = () => {
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const coll = collection(db,'user_info');
-    const [user,setUser] = useState({});
-    const [validation,setValidation] = useState('');
-    const inputHandle = (event) =>{
-       setUser(value=>({...value,[event.target.name]:event.target.value}))
-    }
+const SellerRegister = () => {
 
-    const formHandle = (event) =>{
+     const db = getFirestore(app);
+     const [user, setUser] = useState({});
+     const [validation, setValidation] = useState("");
+     const navigate = useNavigate();
+
+     const inputHandle = (event) => {
+       setUser((value) => ({
+         ...value,
+         [event.target.name]: event.target.value,
+       }));
+     };
+
+     const formHandle = (event) => {
        event.preventDefault();
        console.log(user);
-   
-       if (!/(?=.*?[A-Z]).*/.test(user.password)){
-         setValidation('Password must contain a UpperCase Latter');
-         return ;
-       }
-         createUserWithEmailAndPassword(auth, user.email, user.password)
-           .then((result) => {
-             console.log("User Created Successfully ");
-             setValidation('');
-           })
-           .catch((error) => {
-             console.error("Error ", error);
-           });
 
-       let full_name = user.fist_name+user.last_name;
-       updateProfile(auth.currentUser, {
-         displayName: full_name
-       })
-       .then(()=>{
-        console.log("User Updated");
-       })
-       .catch((error)=>{
-        console.error("Error ",error);
-       })
+    //    if (!/(?=.*?[A-Z]).*/.test(user.password)) {
+    //      setValidation("Password must contain a UpperCase Latter");
+    //      return;
+    //    }
 
-        const docRef = doc(db,'user_info',user.email);
+       const docRef = doc(db, "seller_info", user.email);
 
-       setDoc(docRef,user)
-       .then(()=>{
-        console.log("user created");
-       })
-       .catch(err=>{
-        console.log(err);
-       })
-
-
-    }
-
+       setDoc(docRef, user)
+         .then(() => {
+           console.log("user created");
+         })
+         .catch((err) => {
+           console.log(err);
+         });
+         navigate('/home');
+     };
     return (
       <span>
         <HeroSection></HeroSection>
@@ -65,7 +46,7 @@ const Register = () => {
             <div className="row new-account-login">
               <div className="col-sm-12 col-lg-12 mb-3">
                 <div className="title-left">
-                  <h3>Register to a New Account </h3>
+                  <h3>Register to a New Account for Seller </h3>
                 </div>
                 <form
                   className="mt-3 review-form-box"
@@ -111,6 +92,19 @@ const Register = () => {
                     </div>
                     <div className="form-group col-md-6">
                       <label htmlFor="InputPassword1" className="mb-0">
+                        Phone Number
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="phone_number"
+                        placeholder="phone_number"
+                        onBlur={inputHandle}
+                      />
+                    </div>
+
+                    <div className="form-group col-md-6">
+                      <label htmlFor="InputPassword1" className="mb-0">
                         Password
                       </label>
                       <input
@@ -118,6 +112,18 @@ const Register = () => {
                         className="form-control"
                         name="password"
                         placeholder="Password"
+                        onBlur={inputHandle}
+                      />
+                    </div>
+                    <div className="form-group col-md-6">
+                      <label htmlFor="InputPassword1" className="mb-0">
+                        Confirm Password
+                      </label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="confirm_password"
+                        placeholder="confirm Password"
                         onBlur={inputHandle}
                       />
                     </div>
@@ -129,9 +135,7 @@ const Register = () => {
                 <p>
                   <small className="text-danger">{validation}</small>
                 </p>
-                <p>
-                  <small>Register as a seller <Link to="/seller_register">click here</Link></small>
-                </p>
+                <p></p>
               </div>
             </div>
           </div>
@@ -140,4 +144,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default SellerRegister;
