@@ -99,6 +99,11 @@ const NavigationBar = () => {
                   </Link>
                 </li>
                 <li className="nav-item">
+                  <Link className="nav-link" to="/product">
+                    Product
+                  </Link>
+                </li>
+                <li className="nav-item">
                   <Link className="nav-link" to="/gallery">
                     Gallery
                   </Link>

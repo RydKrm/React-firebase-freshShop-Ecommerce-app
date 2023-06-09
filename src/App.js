@@ -20,6 +20,9 @@ import SellerSignin from "./Components/SignIn/SellerSignin";
 import AddProduct from "./Components/Sellers/AddProduct";
 import ShopDetails from "./Components/Sellers/ShopDetails/ShopDetails";
 import SellerProduct from "./Components/Sellers/SellerProduct/SellerProduct";
+import AllProduct from "./Components/Product/AllProduct/AllProduct";
+import ProductSingle from "./Components/Shop/ProductShop.js/ProductSingle";
+import SingleProduct from "./Components/Product/SingleProduct/SingleProduct";
 
 export const userContext = createContext('none');
 
@@ -61,7 +64,8 @@ const [checkUser, setCheckUser] = useState({ userRole: "none" });
             path="/shop_detail"
             element={<ShopDetails></ShopDetails>}
           ></Route>
-
+          <Route path="/product" element={<AllProduct></AllProduct>}></Route>
+          <Route path="/product/:product_id" element={<SingleProduct></SingleProduct>}></Route>
           <Route path="/wishlist" element={<WishList></WishList>}></Route>
           <Route path="my-account" element={<MyAccount></MyAccount>}></Route>
 

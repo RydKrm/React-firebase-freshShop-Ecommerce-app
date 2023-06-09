@@ -17,7 +17,6 @@ const Shop = () => {
         </div>
      </div>
         
-        <h2 className="lead-1">Shop </h2>
     </div>
 
 
