@@ -1,7 +1,22 @@
-import { addDoc, collection, deleteDoc, deleteField, doc, getDoc, getDocs, getFirestore, setDoc, updateDoc }
- from 'firebase/firestore';
-import React, { useState } from 'react';
+import { addDoc, 
+  collection, 
+  deleteDoc, 
+  deleteField, 
+  doc, 
+  getDoc, 
+  getDocs, 
+  getFirestore, 
+  setDoc, 
+  updateDoc } from 'firebase/firestore';
+ import {
+   ref,
+   uploadBytes,
+   getDownloadURL,
+   getStorage,
+ } from "firebase/storage";
+// import React, { useState } from 'react';
 import app from '../fireBase/firebase.init';
+import { v4 } from "uuid";
 
 const db = getFirestore(app);
 
@@ -99,6 +114,14 @@ export const GetADoc = async(ref,id)=>{
        return docSnap.data();
 }
 
+export const ImageUpload = async (imgRef,img)=>{
+  const storage = getStorage(app);
+  const imageRef = ref(storage,`images/${imgRef}/${img.name+v4()}`)
+  await uploadBytes(imageRef,img);
+  const url = await getDownloadURL(imageRef);
+  console.log("Firebase Image upload successfully ");
+ return url;
+}
 
 
 //  const Module = {

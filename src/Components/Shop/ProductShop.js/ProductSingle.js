@@ -1,52 +1,39 @@
-import { doc, getDoc, getFirestore } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import { useParams} from 'react-router-dom';
-import app from '../../../fireBase/firebase.init';
-import HeroSection from '../../About/HeroSection';
-import ShopSideBar from '../ShopSideBar';
+import React from 'react';
+import { Link} from 'react-router-dom';
 
-const ProductSingle = () => {
-  const [product,setProduct] = useState({});
 
-    const params = useParams();
-    const db = getFirestore(app);
-   
-
-    useEffect(()=>{
-            const fetchData = async () => {
-              try {
-                const docRef = doc(db, "products", params.product_id);
-                const docSnap = await getDoc(docRef);
-                if (docSnap.exists()) {
-                  console.log(docSnap.data());
-                  setProduct(docSnap.data());
-                } else {
-                  console.log("No such document!");
-                }
-              } catch (err) {
-                console.error(err);
-              }
-            };
-        fetchData();
-    },[params.id])
+const ProductSingle = (props) => {
+  const {id,first_name,last_name,image,shop_name} = props.shop;
 
     return (
-       <section>
-         <HeroSection text={product.product_name} ></HeroSection>
-         <div className="container mt-5">
-            <div className="row">
-              <div className="col-md-9">
-                 <img src={product.image} className='img-fluid' alt="" />
-                 <h3>Name : {product.product_name}</h3>
-                 <h3>Category: {product.category}</h3>
-                 <h3>Price : {product.price}</h3>
-                 <h3>Item: left{product.quantity}</h3>
-                 <p>{product.description}</p>
-              </div>
-              <ShopSideBar></ShopSideBar>
+      <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+        <div className="products-single fix">
+          <div className="box-img-hover">
+            <div className="type-lb">
+              <p className="sale">{shop_name}</p>
             </div>
-         </div>
-       </section>
+            <img src={image} className="img-fluid" alt="" />
+            <div className="mask-icon">
+              <ul>
+                <li>
+                  <Link
+                    to={`/shop/${id}`}
+                    data-toggle="tooltip"
+                    data-placement="right"
+                    title="View"
+                  >
+                    <i className="fas fa-eye"></i>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="why-text">
+            <h4>{shop_name}</h4>
+            {/* <h5>{first_name} {last_name} </h5> */}
+          </div>
+        </div>
+      </div>
     );
 };
 

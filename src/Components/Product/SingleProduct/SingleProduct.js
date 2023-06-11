@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './SingleProduct.css';
-import { addDoc, collection, doc, getDoc, getFirestore } from 'firebase/firestore';
+import { doc, getDoc, getFirestore } from 'firebase/firestore';
 import { Link, useParams } from 'react-router-dom';
-import HeroSection from '../../About/HeroSection';
-import ShopSideBar from '../../Shop/ShopSideBar';
 import app from '../../../fireBase/firebase.init';
-import { AddDoc, AddDocWithId, GetADoc, GetAllDoc } from '../../../Context/FirebaseContext';
+import { AddDoc,GetAllDoc } from '../../../Context/FirebaseContext';
 import Review from './Review';
-// import Firebase from '../../../Context/FirebaseContext';
 const SingleProduct = () => {
   const [product, setProduct] = useState({});
   const [review, setReview] = useState({});
@@ -74,40 +71,6 @@ const SingleProduct = () => {
 
     fetchReview();
   },[])
-
-  // AddDocWithId("tests",{name:'product_name'})
-  // .then(doc=>{
-  //     console.log("Added product with id =>",doc)
-  // })
-  // .catch(err=>{
-  //     console.log(err);
-  // })
-
-  //     GetAllDoc('tests')
-  //     .then(doc=>{
-  //         console.log('Get All Documents => ',doc.documentData);
-  //     })
-  //    .catch(err=>{
-  //     console.log(err);
-  //    })
-  // useEffect(()=>{
-  //     const testget = async() =>{
-  //     const documents = await GetAllDoc("products");
-  //     console.log(documents);
-  //     }
-  //     testget();
-  // },[])
-
-// useEffect(() => {
-//   const testget = async () => {
-//     const document = await GetADoc("products", "Rp6mE9LpiJg0JCTt9Bgz");
-//     console.log("A Single document ", document);
-//   };
-//   testget();
-// }, []);
-
-  
-
 
   return (
     <div className="shop-detail-box-main">

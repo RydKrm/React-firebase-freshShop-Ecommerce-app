@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import ProductSingle from './ProductSingle';
+import { GetAllDoc } from '../../../Context/FirebaseContext';
 
 const ProductShop = () => {
+  const [shop,setShop] = useState([]);
+    useEffect(()=>{
+        const getAllProduct = async()=>{
+          const data = await GetAllDoc('seller_info');
+          setShop(data);
+        }
+        getAllProduct();
+    },[])
+
 return (
  <div className="col-xl-9 col-lg-9 col-sm-12 col-xs-12 shop-content-right">
     <div className="right-product-box">
@@ -26,29 +37,15 @@ return (
             <div className="tab-content">
                 <div role="tabpanel" className="tab-pane fade show active" id="grid-view">
                     <div className="row">
-                        <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div className="products-single fix">
-                                <div className="box-img-hover">
-                                    <div className="type-lb">
-                                        <p className="sale">Sale</p>
-                                    </div>
-                                    <img src="images/img-pro-01.jpg" className="img-fluid" alt="" />
-                                    <div className="mask-icon">
-                                        <ul>
-                                            <li><Link href="#" data-toggle="tooltip" data-placement="right" title="View"><i className="fas fa-eye"></i></Link></li>
-                                            <li><Link href="#" data-toggle="tooltip" data-placement="right" title="Compare"><i className="fas fa-sync-alt"></i></Link></li>
-                                            <li><Link href="#" data-toggle="tooltip" data-placement="right" title="Add to Wishlist"><i className="far fa-heart"></i></Link></li>
-                                        </ul>
-                                        <Link className="cart" href="#">Add to Cart</Link>
-                                    </div>
-                                </div>
-                                <div className="why-text">
-                                    <h4>Lorem ipsum dolor sit amet</h4>
-                                    <h5> $9.79</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                        {
+                            shop.map((sp,index)=>
+                             <ProductSingle key={index} shop={sp}></ProductSingle>
+                            )
+                        }
+                        
+
+
+                        {/* <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div className="products-single fix">
                                 <div className="box-img-hover">
                                     <div className="type-lb">
@@ -223,7 +220,7 @@ return (
                                     <h5> $9.79</h5>
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
                 

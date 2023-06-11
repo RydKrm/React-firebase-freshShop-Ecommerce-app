@@ -1,14 +1,16 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import HeroSection from '../../About/HeroSection';
-import ProductViewShop from '../../Shop/ViewShop/ProductViewShop';
-import ShopSideBar from '../../Shop/ShopSideBar';
+import ProductShop from '../ProductShop.js/ProductShop';
+import ShopSideBar from '../ShopSideBar';
+import ProductViewShop from './ProductViewShop';
 
-const SellerProduct = () => {
-   const user = JSON.parse(localStorage.getItem("fresh_shop"));
-   const shop_id = user.email;
+const ViewShop = () => {
+    const params = useParams();
+    const shop_id = params.shop_id;
     return (
       <div>
-        <HeroSection text={'My Shop Product'}></HeroSection>
+        <HeroSection></HeroSection>
         <div class="shop-box-inner">
           <div class="container">
             <div class="row">
@@ -21,4 +23,4 @@ const SellerProduct = () => {
     );
 };
 
-export default SellerProduct;
+export default ViewShop;

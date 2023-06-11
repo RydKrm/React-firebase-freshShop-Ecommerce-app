@@ -40,12 +40,21 @@ const AddProduct = () => {
     }
 
     try {
+      const prd = JSON.parse(localStorage.getItem("fresh_shop"));
+      setProduct((value) => ({ ...value, shop_name: prd.shop_name }));
+      //setProduct((value) => ({ ...value, shop_image: prd.shop_image }));
+      setProduct((value) => ({ ...value, condition: 'Sale' }));
+      setProduct((value) => ({ ...value, shop_id: prd.email }));
+
       const imageRef = ref(storage, `images/products/${img.name + v4()}`);
       await uploadBytes(imageRef, img);
       const url = await getDownloadURL(imageRef);
       console.log("Image => ", url);
-      setImgUrl(url);
       setProduct((value) => ({ ...value, 'image': url }));
+      setImgUrl(url);
+      
+
+      
     } catch (error) {
       console.error("Error uploading image:", error);
     }
@@ -55,7 +64,7 @@ const AddProduct = () => {
     try {
      // setProduct((value) => ({ ...value, 'image': imgUrl }));
      // console.log("Image Uploaded successfully");
-
+      console.log("Product info ",product);
       const col = collection(db, "products");
       addDoc(col, product);
       console.log("product add successfully");
@@ -116,7 +125,7 @@ const AddProduct = () => {
                         Quantity
                       </label>
                       <input
-                        type="text"
+                        type="number"
                         className="form-control"
                         name="quantity"
                         placeholder="Quantity"

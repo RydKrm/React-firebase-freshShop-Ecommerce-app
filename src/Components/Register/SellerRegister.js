@@ -1,15 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate} from 'react-router-dom';
 import HeroSection from "../About/HeroSection";
 import { getFirestore,setDoc, doc } from "@firebase/firestore";
+import { ref, uploadBytes, getDownloadURL, getStorage } from "firebase/storage";
 import app from "../../fireBase/firebase.init";
+// import { ImageUpload } from '../../Context/FirebaseContext';
+import {v4} from 'uuid';
 
 const SellerRegister = () => {
 
      const db = getFirestore(app);
      const [user, setUser] = useState({});
      const [validation, setValidation] = useState("");
+     const [img,setImg] = useState('');
+     const [imgUrl,setImgUrl] = useState('');
      const navigate = useNavigate();
+     const storage = getStorage(app);
 
      const inputHandle = (event) => {
        setUser((value) => ({
@@ -18,26 +24,57 @@ const SellerRegister = () => {
        }));
      };
 
-     const formHandle = (event) => {
+     const imageUpload = (e)=>{
+      const image = e.target.files[0];
+      setImg(image);
+      console.log("Image set Successfully");
+     }
+     const formHandle =async (event) => {
        event.preventDefault();
-       console.log(user);
 
-    //    if (!/(?=.*?[A-Z]).*/.test(user.password)) {
-    //      setValidation("Password must contain a UpperCase Latter");
-    //      return;
-    //    }
+       if(!img){
+        console.log("Image is not Set");
+        setValidation('Image is not Added');
+        return;
+       }
 
-       const docRef = doc(db, "seller_info", user.email);
-
-       setDoc(docRef, user)
-         .then(() => {
-           console.log("user created");
-         })
-         .catch((err) => {
-           console.log(err);
-         });
-         navigate('/home');
+        try {
+          const imageRef = ref(storage, `images/shops/${img.name + v4()}`);
+          await uploadBytes(imageRef, img);
+          const url = await getDownloadURL(imageRef);
+          console.log("Image => ", url);
+          setImgUrl(url);
+          setUser((value) => ({ ...value, 'image': url }));
+          setUser((value) => ({ ...value, userRole: 'seller' }));
+        } catch (error) {
+          console.error("Error uploading image:", error);
+        }
+   
      };
+
+       const productUpload = () => {
+         try {
+           const docRef = doc(db, "seller_info", user.email);
+
+           setDoc(docRef, user)
+             .then(() => {
+               console.log("user created");
+             })
+             .catch((err) => {
+               console.log(err);
+             });
+           console.log("Shop add", user);
+         } catch (error) {
+           console.error("Error uploading product:", error);
+         }
+       };
+
+useEffect(() => {
+  if (imgUrl) {
+    productUpload();
+  }
+}, [imgUrl]);
+
     return (
       <span>
         <HeroSection></HeroSection>
@@ -125,6 +162,31 @@ const SellerRegister = () => {
                         name="confirm_password"
                         placeholder="confirm Password"
                         onBlur={inputHandle}
+                      />
+                    </div>
+                    <div className="form-group col-md-6">
+                      <label htmlFor="InputPassword1" className="mb-0">
+                        Shop Name
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="shop_name"
+                        required
+                        placeholder="Shop Name"
+                        onBlur={inputHandle}
+                      />
+                    </div>
+                    <div className="form-group col-md-6">
+                      <label htmlFor="InputPassword1" className="mb-0">
+                        Shop Image 
+                      </label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        name="shop_image"
+                        placeholder="Shop Image"
+                        onChange={imageUpload}
                       />
                     </div>
                   </div>

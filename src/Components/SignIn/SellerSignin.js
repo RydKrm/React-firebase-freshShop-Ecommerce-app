@@ -5,10 +5,10 @@ import {
   getFirestore,
   getDoc,
   doc,
-  setDoc,
 } from "@firebase/firestore";
 import { userContext } from "../../App";
-import { Link, useNavigate } from "react-router-dom";
+import {useNavigate } from "react-router-dom";
+import { GetADoc } from "../../Context/FirebaseContext";
 
 const SellerSignIn = () => {
   const [user, setUser] = useState({ userRole: "seller" });
@@ -20,26 +20,21 @@ const SellerSignIn = () => {
     setUser((value) => ({ ...value, [event.target.name]: event.target.value }));
   };
 
-  const formHandle = (event) => {
+  const formHandle = async(event) => {
     event.preventDefault();
     const docRef = doc(db, "seller_info", user.email);
     try {
       getDoc(docRef)
-        .then(() => {
+        .then( async() => {
           console.log("User Exists");
           setCheckUser({ userRole: "seller" });
-          localStorage.setItem("fresh_shop", JSON.stringify(user));
-          navigate("/home");
+          const data = await GetADoc('seller_info',user.email);
+          localStorage.setItem("fresh_shop", JSON.stringify(data));
+         // navigate("/home");
         })
         .catch((err) => {
           console.log(err);
         });
-      // if(docSnap.exists()) {
-      //     console.log(docSnap.data());
-      // } else {
-      //     console.log("Document does not exist")
-      // }
-      // console.log(docSnap);
     } catch (error) {
       console.log(error);
     }
