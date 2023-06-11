@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const ProductTemplate = (props) => {
-    const { id,category, description, image, price, product_name, quantity } =
+    const { id,category, image, price, product_name} =
       props.data;
+      
     return (
       <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
         <div className="products-single fix">

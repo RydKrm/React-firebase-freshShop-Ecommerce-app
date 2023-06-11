@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
  // const [checkUser,setCheckUser] = useContext(userContext);
+ let userRole = '';
+ if(localStorage.getItem("fresh_shop")){
   const user = JSON.parse(localStorage.getItem("fresh_shop"));
+   userRole = user.userRole;
+ }
+  
     return (
       <header className="main-header">
         <nav className="navbar navbar-expand-lg navbar-light bg-light navbar-default bootsnav">
@@ -48,7 +53,7 @@ const NavigationBar = () => {
                     About Us
                   </Link>
                 </li>
-                {user.userRole === "customer" && (
+                {userRole === "customer" && (
                   <li className="dropdown">
                     <Link to="#" className="nav-link" data-toggle="dropdown">
                       Profile
@@ -72,7 +77,7 @@ const NavigationBar = () => {
                     </ul>
                   </li>
                 )}
-                {user.userRole === "seller" && (
+                {userRole === "seller" && (
                   <li className="dropdown">
                     <Link to="#" className="nav-link" data-toggle="dropdown">
                       Seller Profile

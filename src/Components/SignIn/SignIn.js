@@ -58,32 +58,23 @@ const SignIn = () => {
     setUser((value) => ({ ...value, [event.target.name]: event.target.value }));
   };
 
-  const formHandle = (event)=>{
+  const formHandle = async (event)=>{
     event.preventDefault();
     const docRef = doc(db, "user_info", user.email);
     try {
-    getDoc(docRef)
-    .then(()=>{
-      console.log("User Exists");
-      setCheckUser({userRole:'customer'});
-      localStorage.setItem("fresh_shop",JSON.stringify(user));
-      navigate("/home");
-      
-    })
-    .catch(err=>{
-      console.log(err);
-    })
-    // if(docSnap.exists()) {
-    //     console.log(docSnap.data());
-    // } else {
-    //     console.log("Document does not exist")
-    // }
-   // console.log(docSnap);
+      const docSnap = await getDoc(docRef);
 
-} catch(error) {
-    console.log(error)
-}
-
+      if (docSnap.exists()) {
+        console.log("login data",docSnap.data());
+        setUser(docSnap.data());
+        localStorage.setItem("fresh_shop", JSON.stringify(docSnap.data()));
+        
+      } else {
+        console.log("No such document!");
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 
     return (
@@ -143,6 +134,7 @@ const SignIn = () => {
                   </button>
                   <p><small>For seller login<Link to='/seller_signin'> click here </Link></small></p>
                 </form>
+                
               </div>
             </div>
           </div>
