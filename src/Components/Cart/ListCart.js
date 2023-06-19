@@ -1,7 +1,48 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+// import { Link } from 'react-router-dom';
+import CartItem from './CartItem';
 
-const ListCart = () => {
+const ListCart = (props) => {
+    const [allItem,setAllItem] = useState([]);
+    const [loadAllItem,setLoadAllItem] = useState([]);
+    const [totalPrice,setTotalPrice] = useState(0);
+    
+    useEffect(()=>{
+        const checkDelete = async()=>{
+            console.log("Checking for Delete ",allItem);
+       // await localStorage.setItem("fresh_shop_cart", JSON.stringify(allItem));
+        }
+        checkDelete();
+    },[allItem])
+
+    const deleteItem = (id)=>{
+        console.log("Id =>  ",id);
+        console.log("Check State => ",allItem);
+        setAllItem((prevItem)=>{
+            return prevItem.filter((event)=>{
+                return id!==event.id;
+            })
+        })
+        
+       // setCheck(true);
+    }
+
+    useEffect(()=>{
+        const allProduct = JSON.parse(localStorage.getItem('fresh_shop_cart'));
+        setLoadAllItem(allProduct);
+       // setAllItem(allProduct);
+        const InitialPrice = allProduct.reduce(
+          (accumulator, ap) => accumulator + Number(ap.price),0);
+        setTotalPrice(InitialPrice);
+       // props.sumPrice(allPrice);
+        },[]);
+
+    const priceAdder = (price)=>{
+       const sum = totalPrice+price;
+       setTotalPrice(sum);
+       props.getPrice(sum);
+    }
+
     return (
      <div className="row">
     <div className="col-lg-12">
@@ -18,78 +59,13 @@ const ListCart = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td className="thumbnail-img">
-                            <Link href="#">
-                        <img className="img-fluid" src="images/img-pro-01.jpg" alt="" />
-                    </Link>
-                        </td>
-                        <td className="name-pr">
-                            <Link href="#">
-                        Lorem ipsum dolor sit amet
-                    </Link>
-                        </td>
-                        <td className="price-pr">
-                            <p>$ 80.0</p>
-                        </td>
-                        <td className="quantity-box"><input type="number" size="4" value="1" min="0" step="1" className="c-input-text qty text"/></td>
-                        <td className="total-pr">
-                            <p>$ 80.0</p>
-                        </td>
-                        <td className="remove-pr">
-                            <Link href="#">
-                        <i className="fas fa-times"></i>
-                    </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="thumbnail-img">
-                            <Link href="#">
-                        <img className="img-fluid" src="images/img-pro-02.jpg" alt="" />
-                    </Link>
-                        </td>
-                        <td className="name-pr">
-                            <Link href="#">
-                        Lorem ipsum dolor sit amet
-                    </Link>
-                        </td>
-                        <td className="price-pr">
-                            <p>$ 60.0</p>
-                        </td>
-                        <td className="quantity-box"><input type="number" size="4" value="1" min="0" step="1" className="c-input-text qty text" /></td>
-                        <td className="total-pr">
-                            <p>$ 80.0</p>
-                        </td>
-                        <td className="remove-pr">
-                            <Link href="#">
-                        <i className="fas fa-times"></i>
-                    </Link>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="thumbnail-img">
-                            <Link href="#">
-                        <img className="img-fluid" src="images/img-pro-03.jpg" alt="" />
-                    </Link>
-                        </td>
-                        <td className="name-pr">
-                            <Link href="#">
-                        Lorem ipsum dolor sit amet
-                    </Link>
-                        </td>
-                        <td className="price-pr">
-                            <p>$ 30.0</p>
-                        </td>
-                        <td className="quantity-box"><input type="number" size="4" value="1" min="0" step="1" className="c-input-text qty text" /></td>
-                        <td className="total-pr">
-                            <p>$ 80.0</p>
-                        </td>
-                        <td className="remove-pr">
-                            <Link href="#">
-                        <i className="fas fa-times"></i>
-                    </Link>
-                        </td>
-                    </tr>
+                    {
+                        loadAllItem.map((It,index)=><CartItem data={It} 
+                          deleteItem={deleteItem} 
+                          key={index} 
+                          priceAdder={priceAdder}
+                        ></CartItem>)
+                    }
                 </tbody>
             </table>
         </div>

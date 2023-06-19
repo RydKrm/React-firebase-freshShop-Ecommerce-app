@@ -21,7 +21,7 @@ import AddProduct from "./Components/Sellers/AddProduct";
 import ShopDetails from "./Components/Shop/ShopDetails/ShopDetails";
 import SellerProduct from "./Components/Sellers/SellerProduct/SellerProduct";
 import AllProduct from "./Components/Product/AllProduct/AllProduct";
-import ProductSingle from "./Components/Shop/ProductShop.js/ProductSingle";
+//import ProductSingle from "./Components/Shop/ProductShop.js/ProductSingle";
 import SingleProduct from "./Components/Product/SingleProduct/SingleProduct";
 import ViewShop from "./Components/Shop/ViewShop/ViewShop";
 

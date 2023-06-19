@@ -1,14 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MyCard from '../MyCard/MyCard';
 import { Link } from 'react-router-dom';
 
 const NavigationBar = () => {
  // const [checkUser,setCheckUser] = useContext(userContext);
+ const [addClass,setAddClass] = useState('side');
  let userRole = '';
  if(localStorage.getItem("fresh_shop")){
   const user = JSON.parse(localStorage.getItem("fresh_shop"));
    userRole = user.userRole;
- }
+ } 
+
+  const sideBarChange = (value)=>{
+    setAddClass(value);
+  };
+  
   
     return (
       <header className="main-header">
@@ -128,7 +134,7 @@ const NavigationBar = () => {
                     <i className="fa fa-search"></i>
                   </Link>
                 </li>
-                <li className="side-menu">
+                <li className="side-menu" onClick={()=>sideBarChange('side sidebar-class')}>
                   <Link to="#">
                     <i className="fa fa-shopping-bag"></i>
                     <span className="badge">3</span>
@@ -139,7 +145,7 @@ const NavigationBar = () => {
             </div>
           </div>
 
-          <MyCard></MyCard>
+          <MyCard sideBarChange={sideBarChange} addCart={addClass}></MyCard>
         </nav>
       </header>
     );

@@ -53,7 +53,7 @@ const ShopSideBar = () => {
             <div className="price-box-slider">
                 <div id="slider-range"></div>
                 <p>
-                    <input type="text" id="amount" readonly />
+                    <input type="text" id="amount" readOnly />
                     <button className="btn hvr-hover" type="submit">Filter</button>
                 </p>
             </div>

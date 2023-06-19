@@ -4,6 +4,34 @@ import { Link } from 'react-router-dom';
 const ProductTemplate = (props) => {
     const { id,category, image, price, product_name} =
       props.data;
+     // const [product,setProduct] = useState({});
+      //const [allProduct,setAllProduct] = useState([]);
+
+      const AddProduct = ()=>{
+        const addedProduct = {
+          id,
+          product_name,
+          category,
+          image,
+          price,
+        };
+        const prevProducts =
+          JSON.parse(localStorage.getItem("fresh_shop_cart")) || [];
+         // setAllProduct(prevProducts);
+         //setAllProduct((prevProducts) => [...prevProducts, addedProduct]);
+        const productExists = prevProducts.some(
+          (product) => product.id === addedProduct.id
+        );
+        if (productExists) {
+          console.log("Product already found");
+          return;
+        }
+
+        localStorage.setItem(
+          "fresh_shop_cart",
+          JSON.stringify([...prevProducts, addedProduct])
+        );
+      }
       
     return (
       <div className="col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -46,7 +74,7 @@ const ProductTemplate = (props) => {
                   </Link>
                 </li>
               </ul>
-              <Link className="cart" href="#">
+              <Link className="cart" href="#" onClick={AddProduct}>
                 Add to Cart
               </Link>
             </div>
