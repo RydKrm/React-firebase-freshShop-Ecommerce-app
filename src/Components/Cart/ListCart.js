@@ -1,47 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, } from 'react';
 // import { Link } from 'react-router-dom';
 import CartItem from './CartItem';
+import { CartContext } from './Cart';
 
-const ListCart = (props) => {
-    const [allItem,setAllItem] = useState([]);
-    const [loadAllItem,setLoadAllItem] = useState([]);
-    const [totalPrice,setTotalPrice] = useState(0);
-    
-    useEffect(()=>{
-        const checkDelete = async()=>{
-            console.log("Checking for Delete ",allItem);
-       // await localStorage.setItem("fresh_shop_cart", JSON.stringify(allItem));
-        }
-        checkDelete();
-    },[allItem])
-
-    const deleteItem = (id)=>{
-        console.log("Id =>  ",id);
-        console.log("Check State => ",allItem);
-        setAllItem((prevItem)=>{
-            return prevItem.filter((event)=>{
-                return id!==event.id;
-            })
-        })
-        
-       // setCheck(true);
-    }
-
-    useEffect(()=>{
-        const allProduct = JSON.parse(localStorage.getItem('fresh_shop_cart'));
-        setLoadAllItem(allProduct);
-       // setAllItem(allProduct);
-        const InitialPrice = allProduct.reduce(
-          (accumulator, ap) => accumulator + Number(ap.price),0);
-        setTotalPrice(InitialPrice);
-       // props.sumPrice(allPrice);
-        },[]);
-
-    const priceAdder = (price)=>{
-       const sum = totalPrice+price;
-       setTotalPrice(sum);
-       props.getPrice(sum);
-    }
+const ListCart = () => {
+    const {allProduct} = useContext(CartContext);
 
     return (
      <div className="row">
@@ -59,12 +22,9 @@ const ListCart = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {
-                        loadAllItem.map((It,index)=><CartItem data={It} 
-                          deleteItem={deleteItem} 
-                          key={index} 
-                          priceAdder={priceAdder}
-                        ></CartItem>)
+                 {
+                  allProduct.map((It,index)=><CartItem data={It} 
+                    key={index} ></CartItem>)
                     }
                 </tbody>
             </table>

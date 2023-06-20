@@ -14,6 +14,7 @@ const ProductTemplate = (props) => {
           category,
           image,
           price,
+          quantity: 1,
         };
         const prevProducts =
           JSON.parse(localStorage.getItem("fresh_shop_cart")) || [];
